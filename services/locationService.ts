@@ -1,9 +1,9 @@
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import { Alert, Platform } from "react-native";
-import { TASKS } from "./TaskService";
+import { TASKS } from "../Constants";
 
-export class LocationService {
+class LocationService {
   async askPermission() {
     let isGranted = true;
 
@@ -56,4 +56,6 @@ export class LocationService {
   }
 }
 
-export const locationService = new LocationService();
+const locationService = new LocationService();
+
+export default locationService;

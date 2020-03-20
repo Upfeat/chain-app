@@ -1,9 +1,6 @@
 import * as TaskManager from "expo-task-manager";
-import { locationService } from "./LocationService";
-
-export const TASKS = {
-  LOCATION_UPDATE: "LOCATION_UPDATE"
-};
+import locationService from "./LocationService";
+import { TASKS } from "../Constants";
 
 TaskManager.defineTask(TASKS.LOCATION_UPDATE, ({ data, error }: any) => {
   if (error) {
