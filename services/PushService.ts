@@ -1,6 +1,6 @@
 import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
-import stitchService from "./stitchService";
+import stitchService from "./StitchService";
 
 export default {
   async registerForPushNotificationsAsync() {

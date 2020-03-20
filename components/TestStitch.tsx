@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Text, View, Button } from "react-native";
 
-import stitchService from "../services/stitchService";
-import pushService from "../services/pushService";
+import stitchService from "../services/StitchService";
+import pushService from "../services/PushService";
 
 export default class TestStitch extends Component {
   testStitch() {
