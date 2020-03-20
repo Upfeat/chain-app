@@ -5,7 +5,7 @@ import Constants from "expo-constants";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { locationService } from "../../services/LocationService";
+import locationService from "../../services/LocationService";
 
 export default function TraceButton() {
   function _startTrace() {
