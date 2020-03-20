@@ -13,6 +13,11 @@ type Location = {
   userId?: string;
 };
 
+type User = {
+  userId?: string;
+  pushToken?: string;
+};
+
 class StitchService {
   constructor() {
     this.initDB();
@@ -21,6 +26,7 @@ class StitchService {
   private client: StitchAppClient = null;
   private mongodb: RemoteMongoClient = null;
   private coarseLocationCollection: RemoteMongoCollection<Location> = null;
+  private userCollection: RemoteMongoCollection<Location> = null;
 
   private async initDB() {
     this.client = await Stitch.initializeDefaultAppClient("chain-wmapo");
@@ -32,6 +38,8 @@ class StitchService {
     this.coarseLocationCollection = this.mongodb
       .db("chain")
       .collection("coarseLocations");
+
+    this.userCollection = this.mongodb.db("chain").collection("users");
   }
 
   async pushCoarseLocation(data: Location) {
@@ -39,6 +47,16 @@ class StitchService {
       userId: this.client.auth.user.id,
       ...data
     });
+  }
+
+  async updateUserObject(data: User) {
+    return this.userCollection.updateOne(
+      { userId: this.client.auth.user.id },
+      { userId: this.client.auth.user.id, ...data },
+      {
+        upsert: true
+      }
+    );
   }
 }
 

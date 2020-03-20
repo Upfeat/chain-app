@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Text, View, Button } from "react-native";
-import { Stitch, AnonymousCredential } from "mongodb-stitch-react-native-sdk";
 
 import stitchService from "../services/stitchService";
+import pushService from "../services/pushService";
 
 export default class TestStitch extends Component {
   testStitch() {
+    pushService.registerForPushNotificationsAsync();
     stitchService.pushCoarseLocation({
       endTime: 32423424,
       startTime: 2131331,
