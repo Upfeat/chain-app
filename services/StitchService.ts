@@ -5,18 +5,7 @@ import {
   RemoteMongoClient,
   RemoteMongoCollection
 } from "mongodb-stitch-react-native-sdk";
-
-type Location = {
-  startTime: number;
-  endTime: number;
-  zone: string;
-  userId?: string;
-};
-
-type User = {
-  userId?: string;
-  pushToken?: string;
-};
+import { ChainUser, ChainLocation } from "../types";
 
 class StitchService {
   constructor() {
@@ -25,7 +14,7 @@ class StitchService {
 
   private client: StitchAppClient = null;
   private mongodb: RemoteMongoClient = null;
-  private coarseLocationCollection: RemoteMongoCollection<Location> = null;
+  private coarseLocationCollection: RemoteMongoCollection<ChainLocation> = null;
   private userCollection: RemoteMongoCollection<Location> = null;
 
   private async initDB() {
@@ -42,14 +31,14 @@ class StitchService {
     this.userCollection = this.mongodb.db("chain").collection("users");
   }
 
-  async pushCoarseLocation(data: Location) {
+  async pushCoarseLocation(data: ChainLocation) {
     return this.coarseLocationCollection.insertOne({
       userId: this.client.auth.user.id,
       ...data
     });
   }
 
-  async updateUserObject(data: User) {
+  async updateUserObject(data: ChainUser) {
     return this.userCollection.updateOne(
       { userId: this.client.auth.user.id },
       { userId: this.client.auth.user.id, ...data },
