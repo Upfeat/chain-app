@@ -25,7 +25,7 @@ class StitchService {
   private async initDB() {
     this.client = await Stitch.initializeDefaultAppClient("chain-wmapo");
     await this.client.auth.loginWithCredential(new AnonymousCredential());
-    this.mongodb = await this.client.getServiceClient(
+    this.mongodb = this.client.getServiceClient(
       RemoteMongoClient.factory,
       "mongodb-atlas"
     );
@@ -35,7 +35,7 @@ class StitchService {
   }
 
   async pushCoarseLocation(data: Location) {
-    await this.coarseLocationCollection.insertOne({
+    return this.coarseLocationCollection.insertOne({
       userId: this.client.auth.user.id,
       ...data
     });
