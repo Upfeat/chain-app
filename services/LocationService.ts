@@ -2,6 +2,9 @@ import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import { Alert, Platform } from "react-native";
 import { TASKS } from "../Constants";
+import GeoZones from '@upfeat/geozone';
+
+const zones = new GeoZones(1000);
 
 class LocationService {
   async askPermission() {
@@ -44,6 +47,7 @@ class LocationService {
     // call geozone lib get zone
     // save cords
     console.log(locations);
+    const zone = zones.getZone(locations[0].coords.latitude, locations[0].coords.longitude)
   }
 
   private startTracing() {
