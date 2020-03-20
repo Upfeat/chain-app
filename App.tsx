@@ -8,6 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import RootStackNavigator from './navigation/RootStackNavigator';
 import useLinking from './navigation/useLinking';
+import './services/taskService';
 
 const Stack = createStackNavigator();
 
