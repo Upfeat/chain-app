@@ -2,7 +2,8 @@ import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import { Alert, Platform } from "react-native";
 import { TASKS } from "../Constants";
-import GeoZones from '@upfeat/geozone';
+import GeoZones from "@upfeat/geozone";
+import AppService from "./AppService";
 
 const zones = new GeoZones(1000);
 
@@ -19,6 +20,7 @@ class LocationService {
           "Error",
           "Location service need to be enabled, Please go to your setting to enable it."
         );
+        AppService.setTracing("false");
         shouldAskAgain = true;
         isGranted = false;
         // @ts-ignore
@@ -47,15 +49,22 @@ class LocationService {
     // call geozone lib get zone
     // save cords
     console.log(locations);
-    const zone = zones.getZone(locations[0].coords.latitude, locations[0].coords.longitude)
+    const zone = zones.getZone(
+      locations[0].coords.latitude,
+      locations[0].coords.longitude
+    );
   }
 
-  private startTracing() {
+  private async startTracing() {
     if (!Location.hasStartedLocationUpdatesAsync(TASKS.LOCATION_UPDATE)) {
       Location.startLocationUpdatesAsync(TASKS.LOCATION_UPDATE, {
         accuracy: Location.Accuracy.High,
-        pausesUpdatesAutomatically: true
+        pausesUpdatesAutomatically: true,
       });
+    }
+
+    if (!(await AppService.isTracing())) {
+      AppService.setTracing("true");
     }
   }
 }

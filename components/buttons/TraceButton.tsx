@@ -6,8 +6,10 @@ import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import locationService from "../../services/LocationService";
+import AppService from "../../services/AppService";
 
 export default function TraceButton() {
+  const isTracing = AppService.isTracing();
   function _startTrace() {
     locationService.askPermission();
   }
