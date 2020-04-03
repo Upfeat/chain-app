@@ -11,14 +11,16 @@
   "jest": {
     "preset": "jest-expo"
   },
+  "typings": "./types/index.d.ts",
   "dependencies": {
     "@expo/vector-icons": "~10.0.0",
     "@react-native-community/masked-view": "0.1.5",
     "@react-navigation/bottom-tabs": "^5.0.0",
     "@react-navigation/native": "^5.0.0",
     "@react-navigation/stack": "^5.0.0",
-    "@upfeat/geozone": "^1.0.8",
+    "@upfeat/geozone": "^1.0.9",
     "expo": "~36.0.0",
+    "expo-application": "~2.0.0",
     "expo-asset": "~8.0.0",
     "expo-constants": "~8.0.0",
     "expo-font": "~8.0.0",
@@ -31,8 +33,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
     "react-native-gesture-handler": "~1.5.0",
     "react-native-safe-area-context": "0.6.0",
-    "react-native-screens": "2.0.0-alpha.12",
-    "expo-application": "~2.0.0"
+    "react-native-screens": "2.0.0-alpha.12"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

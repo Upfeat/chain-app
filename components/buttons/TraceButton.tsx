@@ -7,11 +7,13 @@ import * as Permissions from "expo-permissions";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import locationService from "../../services/LocationService";
 import AppService from "../../services/AppService";
+import pushService from "../../services/PushService";
 
 export default function TraceButton() {
   const isTracing = AppService.isTracing();
   function _startTrace() {
     locationService.askPermission();
+    pushService.askPermission();
   }
 
   return (
@@ -24,6 +26,6 @@ export default function TraceButton() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    ...Layouts.flex()
-  }
+    ...Layouts.flex(),
+  },
 });
