@@ -2,12 +2,21 @@ import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import { Alert, Platform } from "react-native";
 import { TASKS } from "../Constants";
-import { GeoZones } from "@upfeat/geozone";
+import { GeoZones, Zone } from "@upfeat/geozone";
 import AppService from "./AppService";
-
-const zones = new GeoZones(1000);
+import StorageService from "./StorageService";
+import apiService from "./ApiService";
 
 class LocationService {
+  public static ZONE_SIZE: number = 1000;
+  public static CURRENT_ZONE_KEY: string = "CURRENT_ZONE";
+
+  private zoneService: GeoZones;
+
+  constructor() {
+    this.zoneService = new GeoZones(LocationService.ZONE_SIZE);
+  }
+
   async askPermission() {
     let isGranted = true;
 
@@ -22,7 +31,6 @@ class LocationService {
       AppService.setTracing("false");
       shouldAskAgain = true;
       isGranted = false;
-      // @ts-ignore
     } else if (
       Platform.OS === "ios" &&
       resp.permissions.location.ios.scope !== "always"
@@ -41,14 +49,46 @@ class LocationService {
     }
   }
 
-  onUpdate(locations: Location.LocationData[]) {
-    // call geozone lib get zone
-    // save cords
-    console.log(locations);
-    const zone = zones.getZone(
-      locations[0].coords.latitude,
-      locations[0].coords.longitude
+  async onUpdate(locations: Location.LocationData[]) {
+    const location = locations[0];
+    await this.storeLocation(location);
+
+    let currentZone = await this.getCurrentZone();
+
+    const zone = this.zoneService.getZone(
+      location.coords.latitude,
+      location.coords.longitude
     );
+
+    if (currentZone) {
+      if (
+        !this.zoneService.isInZone(
+          currentZone,
+          location.coords.latitude,
+          location.coords.longitude
+        )
+      ) {
+        this.setCurrentZone(zone);
+      }
+    } else {
+      this.setCurrentZone(zone);
+    }
+  }
+
+  private async storeLocation(location: Location.LocationData) {
+    await StorageService.set(
+      `location-${location.timestamp}`,
+      JSON.stringify(Location)
+    );
+  }
+
+  private async getCurrentZone(): Promise<Zone> {
+    return await StorageService.get(LocationService.CURRENT_ZONE_KEY);
+  }
+
+  private async setCurrentZone(zone: Zone): Promise<void> {
+    await StorageService.set(LocationService.CURRENT_ZONE_KEY, zone);
+    await apiService.updateZone(zone);
   }
 
   private async startTracing() {

@@ -1,15 +1,15 @@
-import { AsyncStorage } from "react-native";
+import StorageService from "./StorageService";
 
 async function isTracing() {
-  const tracing = await AsyncStorage.getItem("isTracing");
+  const tracing = await StorageService.get("isTracing");
   return tracing === "true";
 }
 
 async function setTracing(isTracking: "true" | "false") {
-  await AsyncStorage.setItem("isTracing", isTracking);
+  await StorageService.set("isTracing", isTracking);
 }
 
 export default {
   isTracing,
-  setTracing
+  setTracing,
 };
